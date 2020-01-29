@@ -100,6 +100,16 @@ class BoxPlot extends GuiComponent {
     return quantiles;
   }
 
+  /// Sets the color of box plot
+  void setBoxPlotColor(String color) {
+    boxPlotcolor = color;
+  }
+
+  /// Returns the color of box plot
+  String getBoxPlotColor() {
+    return boxPlotcolor;
+  }
+
   /// Changes the ball of [value] color
   void setBallColor(String colorCode) {
     ballColor = colorCode;
