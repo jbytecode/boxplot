@@ -1,4 +1,4 @@
-## 1.0.4
+## 1.0.5
 
 - Quantiles can be set manually as well as automatically. 
 A basic algorithm is used to estimate 25th and 75th quantiles.
