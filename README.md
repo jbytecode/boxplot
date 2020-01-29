@@ -1,3 +1,5 @@
+![Dart CI](https://github.com/jbytecode/boxplot/workflows/Dart%20CI/badge.svg)
+
 A Boxplot library for Dart developers.
 
 Created by Matletik - Mathematical Manipulatives and Interactive Learning Tools
