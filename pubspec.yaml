@@ -1,6 +1,6 @@
 name: boxplot
 description: A Canvas based boxplot library for Dart Web projects. The component draws a box plot on a Canvas with a predefined min, q1, q2, q3, and max where q1 and q3 are the first and the third quartiles and q2 is the median, respectively.
-version: 1.0.4
+version: 1.0.5
 homepage: http://www.matletik.com
 author: Matletik - Mathematical Manipulatives and Interactive Learning Tools
 

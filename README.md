@@ -6,6 +6,10 @@ Created by Matletik - Mathematical Manipulatives and Interactive Learning Tools
 
 http://www.matletik.com
 
+[Developer Web Site](http://www.matletik.com)
+
+[Source Code](https://github.com/jbytecode/boxplot)
+
 ![Screenshot](https://github.com/jbytecode/boxplot/raw/master/images/screenshot.png)
 
 ## Usage

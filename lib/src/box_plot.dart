@@ -20,10 +20,14 @@
 
 import 'dart:html';
 import 'dart:math' as Math;
+import 'package:boxplot/src/stats.dart';
+
 import 'gui_component.dart';
 
 /// Canvas based BoxPlot GUI Component
 class BoxPlot extends GuiComponent {
+  bool showPoint = true;
+
   /// Width and height of component in pixels
   int width, height;
 
@@ -63,6 +67,7 @@ class BoxPlot extends GuiComponent {
     canvas.width = widthInPixels;
     canvas.height = heightInPixels;
     g2 = canvas.getContext('2d');
+    // Dimension of the virtual cartesian
     setDimensions(-10, 110, -11, 11);
     canvas.onMouseEnter.listen((Event e) {
       mouseEntered = true;
@@ -76,6 +81,16 @@ class BoxPlot extends GuiComponent {
       drawComponent();
     });
     setDefaultQuantiles();
+  }
+
+  /// Sets the [value] point is visible or hidden
+  void setShowPoint(bool show) {
+    showPoint = show;
+  }
+
+  /// Gets the visibility state of [value] point
+  bool getShowPoint() {
+    return showPoint;
   }
 
   /// Sets the default statistics
@@ -155,6 +170,17 @@ class BoxPlot extends GuiComponent {
     setQuantilesWithList([min, q1, q2, q3, max]);
   }
 
+  /// Sets the basic statistics using data
+  void setQuantilesUsingData(List<double> arr) {
+    setQuantilesWithList([
+      Stats.min(arr),
+      Stats.q1(arr),
+      Stats.median(arr),
+      Stats.q3(arr),
+      Stats.max(arr)
+    ]);
+  }
+
   /// Sets dimensions of the virtual cartesian
   void setDimensions(double minx, double maxx, double miny, double maxy) {
     this.minx = minx;
@@ -185,6 +211,14 @@ class BoxPlot extends GuiComponent {
 
   /// Refreshes the content of the component
   void drawComponent() {
+    double max = 100.0;
+    double min = 0.0;
+    double q1 = Stats.arrange(this.min, this.max, this.q1);
+    double q2 = Stats.arrange(this.min, this.max, this.q2);
+    double q3 = Stats.arrange(this.min, this.max, this.q3);
+    double value = Stats.arrange(this.min, this.max, this.value);
+
+    g2.lineWidth = 1;
     g2.fillStyle = boxPlotcolor;
     g2.strokeStyle = 'black';
 
@@ -223,6 +257,7 @@ class BoxPlot extends GuiComponent {
     g2.fill();
     g2.fillStyle = boxPlotcolor;
     g2.fill();
+    g2.strokeStyle = "black";
     g2.stroke();
 
     // Median
@@ -236,8 +271,9 @@ class BoxPlot extends GuiComponent {
     g2.fillStyle = 'black';
 
     // Axis labels
-    for (double i = 0; i <= 100; i += 10) {
-      g2.fillText(i.toString(), translateX(i - 2), translateY(-10));
+    for (double i = min; i <= max; i += 10.0) {
+      g2.fillText(Stats.rearrange(this.min, this.max, i).toInt().toString(),
+          translateX(i - 2), translateY(-10));
     }
 
     //ticks
@@ -269,28 +305,35 @@ class BoxPlot extends GuiComponent {
       double x = mouseEvent.client.x - canvas.getBoundingClientRect().left;
       double y = mouseEvent.client.y - canvas.getBoundingClientRect().top;
       g2.beginPath();
-      g2.rect(x, y, 50, 15);
+      g2.rect(x, y, 70, 15);
       g2.closePath();
       g2.fillStyle = 'rgba(0,0,255,0.25)';
       g2.strokeStyle = 'black';
       g2.fill();
       g2.stroke();
 
-      g2.font = '12px Monospace';
+      g2.font = font;
       g2.fillStyle = 'black';
-      g2.fillText(retranslateX(x).toStringAsFixed(2), x + 10, y + 12);
+      g2.fillText(
+          (Stats.rearrange(this.min, this.max, retranslateX(x)))
+              .toStringAsFixed(2),
+          x + 10,
+          y + 12);
     }
 
     // Ball point
-    g2.beginPath();
-    g2.arc(translateX(value), translateY(2), 5, 0.0, 2.0 * Math.pi, false);
-    g2.closePath();
-    g2.fillStyle = 'white';
-    g2.fill();
-    g2.fillStyle = ballColor;
-    g2.fill();
-    g2.strokeStyle = 'black';
-    g2.stroke();
+    if (showPoint) {
+      g2.beginPath();
+      window.console.log(value);
+      g2.arc(translateX(value), translateY(2), 5, 0.0, 2.0 * Math.pi, false);
+      g2.closePath();
+      g2.fillStyle = 'white';
+      g2.fill();
+      g2.fillStyle = ballColor;
+      g2.fill();
+      g2.strokeStyle = 'black';
+      g2.stroke();
+    }
   }
 
   @override
