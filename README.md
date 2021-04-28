@@ -35,7 +35,7 @@ void main() {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Matletik Boxplot for Dart - Example</title>
+    <title>Boxplot for Dart - Example</title>
     <script src = "boxplot_example.dart.js"></script>
 
     <style>
